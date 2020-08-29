@@ -1,0 +1,87 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Course {
+    id           String @id @default(uuid())
+    organization String
+
+    name String
+
+    evaluations Evaluation[]
+    members     CourseMember[]
+}
+
+model CourseMember {
+    id           String @id @default(uuid())
+    organization String
+
+    userId String
+    begin  DateTime
+    end    DateTime?
+    role   CourseMemberRole
+
+    courseId String
+    course   Course @relation(fields: [courseId], references: [id])
+}
+
+model Evaluation {
+    id           String @id @default(uuid())
+    organization String
+
+    date        DateTime
+    title       String
+    description String?
+    kind        EvaluationKind
+
+    courseId String
+    course   Course           @relation(fields: [courseId], references: [id])
+    parts    EvaluationPart[]
+}
+
+model EvaluationPart {
+    id           String @id @default(uuid())
+    organization String
+
+    date        DateTime
+    title       String
+    description String?
+    maxScore    String?
+    kind        EvaluationPartKind
+
+    evaluationId String
+    evaluation   Evaluation             @relation(fields: [evaluationId], references: [id])
+    results      EvaluationPartResult[]
+}
+
+model EvaluationPartResult {
+    id           String @id @default(uuid())
+    organization String
+
+    userId String
+    score  String
+
+    evaluationPartId String
+    evaluationPart   EvaluationPart @relation(fields: [evaluationPartId], references: [id])
+}
+
+enum CourseMemberRole {
+    STUDENT
+    TEACHER
+}
+
+enum EvaluationKind {
+    TASK
+    TEST
+}
+
+enum EvaluationPartKind {
+    BOOL
+    LETTER
+    NUMERIC
+}

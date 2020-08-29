@@ -1,0 +1,71 @@
+{
+  "name": "evaluation-service",
+  "version": "0.0.1",
+  "description": "Evaluation service for CloudClass",
+  "keywords": [
+    "loopback-application",
+    "loopback"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=10.16"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "docker:build": "docker build -t evaluation-service .",
+    "docker:run": "docker run -p 3000:3000 -d evaluation-service",
+    "eslint": "eslint --cache --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix --cache",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "posttest": "npm run lint",
+    "pretest": "npm run clean && npm run build",
+    "prestart": "npm run build",
+    "prettier:cli": "prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "start": "node -r source-map-support/register .",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "CloudClass <dev@cloudclass.be>",
+  "license": "",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.5.0",
+    "@loopback/core": "^2.9.4",
+    "@loopback/repository": "^2.11.1",
+    "@loopback/rest": "^6.1.0",
+    "@loopback/rest-explorer": "^2.2.9",
+    "@loopback/service-proxy": "^2.3.7",
+    "@prisma/client": "^2.5.1",
+    "tslib": "^2.0.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.1",
+    "@loopback/eslint-config": "^9.0.1",
+    "@loopback/testlab": "^3.2.3",
+    "@prisma/cli": "^2.5.1",
+    "@types/node": "^14.6.0",
+    "eslint": "^7.7.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "prettier": "^2.1.1",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}
